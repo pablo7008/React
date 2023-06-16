@@ -1,11 +1,9 @@
 import { ItemListContainer } from "./components/ItemListContainer";
-import { NavBar } from "./Components/Navbar";
-const ItemListContainer = props => <div>{props.greeting}</div>
-
+import { NavBar1 } from "./components/NavBar1";
 function App() {
   return(  
     <>
-      <NavBar />
+      <NavBar1 />
       <ItemListContainer greeting = "Primer mensaje"/>
     </>
   )
