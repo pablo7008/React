@@ -17,14 +17,13 @@ export const ItemDetailContainer = props => {
             }, 2000)
         })
         promesa.then(result => {
-                setProduct(result[id])
+            setProduct(result.find(product=>product.category === id))
         })
     },[])
-
     return(
     <Container className="mt-4">
         <h3>Detalle</h3>
-        {product.length === 0 ?(
+        {product.length == 0 ?(
             <div>Loading...</div>)
         : ( <ItemDetail botella={product} />
             )}
