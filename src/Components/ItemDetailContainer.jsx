@@ -1,11 +1,12 @@
 import Container from "react-bootstrap/Container"
 import { useState, useEffect } from "react"
 import Bebidas from '../data/products.json'
-import { ItemList } from "./ItemList"
+import { ItemDetail } from "./ItemDetail"
+//import { ItemList } from "./ItemList"
 import { useParams } from "react-router-dom"
 
-export const ItemListContainer = props => {
-    const [products, setProducts] = useState ([])
+export const ItemDetailContainer = props => {
+    const [product, setProduct] = useState ([])
 
     const {id} = useParams()
 
@@ -16,22 +17,17 @@ export const ItemListContainer = props => {
             }, 2000)
         })
         promesa.then(result => {
-            if (id){
-                setProducts(result.filter(product=>product.category === id))
-            } else{
-                setProducts(result)
-            }
+                setProduct(result[id])
         })
-    },[id])
+    },[])
 
     return(
-    <Container>
-        <h3>{props.greeting}</h3>
-        {products.length === 0 ?(
+    <Container className="mt-4">
+        <h3>Detalle</h3>
+        {product.length === 0 ?(
             <div>Loading...</div>)
-        : ( <ItemList products={products} />
+        : ( <ItemDetail botella={product} />
             )}
     </Container>
 )}
-
 

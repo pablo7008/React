@@ -3,17 +3,37 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Logo from "../assets/LogoVino.png";
 import { CartWidget } from "./CartWidget";
+import Bebidas from '../data/products.json'
+import { NavLink } from "react-router-dom";
 
+const buscado = Bebidas.map(product => product.category)
+let categorias = categoriasbebidas(buscado)
+function categoriasbebidas (buscado){
+    const sinrepetir = []
+    for(let i = 0; i < buscado.length; i++) {
+        if (!sinrepetir.includes(buscado[i])) {
+            sinrepetir.push(buscado[i]);
+        }
+    }
+    return sinrepetir
+}
+console.log(categorias)
 export const NavBar1 = () => {
     return (
         <Navbar bg='dark' variant='dark'>
             <Container>
+                <>
                 <img src={Logo} alt='Logo' />
-                <Navbar.Brand href='#home'>Vinoteca Maipu</Navbar.Brand>
+                <NavLink to="home">Vinoteca Maipu</NavLink>
+                </>
                 <Nav className='me-auto'>
-                    <Nav.Link href='#home'>Inicio</Nav.Link>
-                    <Nav.Link href='#features'>Bebidas</Nav.Link>
-                    <Nav.Link href='#pricing'>Contacto</Nav.Link>
+                    {categorias.map(item =>(
+                        <NavLink
+                        key={item}
+                        className="nav-link" to={`./category/${item}`}>
+                        {item}
+                        </NavLink>
+                        ))}
                 </Nav>
                 <CartWidget />
             </Container>
