@@ -1,32 +1,23 @@
 import Container from "react-bootstrap/Container"
 import { useState, useEffect } from "react"
-import Bebidas from '../data/products.json'
+import {getFirestore, doc, getDoc} from 'firebase/firestore'
 import { ItemDetail } from "./ItemDetail"
-//import { ItemList } from "./ItemList"
 import { useParams } from "react-router-dom"
 
-export const ItemDetailContainer = props => {
-    const [product, setProduct] = useState ([])
-
+export const ItemDetailContainer = () => {
+    const [product, setProduct] = useState ({})
     const {id} = useParams()
 
     useEffect(() => {
-        const promesa = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(Bebidas)
-            }, 2000)
-        })
-        promesa.then(result => {
-            setProduct(result.find(product=>product.category === id))
-        })
-    },[])
+        const db = getFirestore()
+        const refDoc= doc(db, "items1", id)
+        getDoc (refDoc).then(snapshot =>
+            setProduct({id: snapshot.id, ... snapshot.data()})
+    )}, [id])
     return(
     <Container className="mt-4">
         <h3>Detalle</h3>
-        {product.length == 0 ?(
-            <div>Loading...</div>)
-        : ( <ItemDetail botella={product} />
-            )}
+        <ItemDetail botella={product} />
     </Container>
 )}
 

@@ -1,18 +1,32 @@
 import Container from "react-bootstrap/Container"
 import { useState, useEffect } from "react"
-import Bebidas from '../data/products.json'
+import {getFirestore, getDocs, collection} from 'firebase/firestore'
 import { ItemList } from "./ItemList"
 import { useParams } from "react-router-dom"
 
-export const ItemListContainer = props => {
+export const ItemListContainer = ({greeting}) => {
     const [products, setProducts] = useState ([])
 
     const {id} = useParams()
+    useEffect(()=>{
+        const db = getFirestore();
+        const refCollection = id;
+        getDocs(refCollection).then((snapshot)=>{
+            if (snapshot.size === 0) console.log ("no results");
+            else
+                console.log(
+                    snapshot.docs.map((doc)=>{
+                        return {id:doc.id, data: doc.data()};
+                    })
+                )
+        })
+    }) 
+    
 
     useEffect(() => {
         const promesa = new Promise((resolve, reject) => {
             setTimeout(() => {
-                resolve(Bebidas)
+                resolve(snapshot.data())
             }, 2000)
         })
         promesa.then(result => {

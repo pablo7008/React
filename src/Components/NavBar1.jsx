@@ -3,10 +3,24 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import Logo from "../assets/LogoVino.png";
 import { CartWidget } from "./CartWidget";
-import Bebidas from '../data/products.json'
+import {getFirestore, getDocs, collection} from 'firebase/firestore'
 import { NavLink } from "react-router-dom";
+import { useEffect } from "react";
 
-const buscado = Bebidas.map(product => product.category)
+useEffect(()=>{
+    const db = getFirestore();
+    const refCollection = collection(db, "items");
+    getDocs(refCollection).then((snapshot)=>{
+        if (snapshot.size === 0) console.log ("no results");
+        else
+            console.log(
+                snapshot.docs.map((doc)=>{
+                    return {id:doc.id, data: doc.data()};
+                })
+            )
+    })
+}, []) 
+const buscado = refCollection.map(product => product.category)
 let categorias = categoriasbebidas(buscado)
 function categoriasbebidas (buscado){
     const sinrepetir = []
